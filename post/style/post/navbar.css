@@ -1,0 +1,13 @@
+.main {
+  width: 100%;
+  background-color: black;
+}
+
+.navbar {
+  width: 30%;
+  float: left;
+  border-right: 1px black solid;
+}
+.other-posts {
+  width: 70%;
+}

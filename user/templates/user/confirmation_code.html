@@ -1,0 +1,63 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Sign up Instagram</title>
+    <link rel="stylesheet" href="{% static  'user/confirmation.css'%}" />
+    <link
+      href="https://fonts.cdnfonts.com/css/instagram-sans-script"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="main">
+      <div class="heading">Instagram</div>
+      <div class="title">Enter Confirmation Code</div>
+      <div class="notice">
+        Enter the confirmation code we sent to naresh123@gmai.com.
+        <a class="resend">Resend Code</a>
+      </div>
+      <div class="sign-up-form">
+        <form method="POST">
+          {% csrf_token %}
+          <div class="input-data">
+            <input
+              type="text"
+              name="confirmation_code"
+              placeholder="Confirmation code"
+              class="code"
+              onkeyup="checking()"
+            />
+          </div>
+          <div class="submit-button">
+            <button type="submit" name="submit" class="button">Next</button>
+          </div>
+        </form>
+        {% if messages %} {% for message in messages %}
+        <div class="messages">
+          <div class="message">{{message}}</div>
+        </div>
+        {% endfor %} {% endif %}
+      </div>
+    </div>
+    <div class="logindiv">
+      Have an account? <a href="{% url 'login' %}">Log in</a>
+    </div>
+    <script>
+      document.querySelector(".button").disabled = true;
+      function checking() {
+        if (document.querySelector(".code").value == "") {
+          document.querySelector(".button").disabled = true;
+        } else {
+          document.querySelector(".button").disabled = false;
+          document.querySelector(".button").style.backgroundColor =
+            "rgb(0, 162, 255)";
+          document.querySelector(".button").style.cursor = "pointer";
+        }
+      }
+    </script>
+  </body>
+</html>

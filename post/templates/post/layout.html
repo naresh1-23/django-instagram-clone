@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Instagram Clone</title>
+    <link
+      href="https://fonts.cdnfonts.com/css/instagram-sans-script"
+      rel="stylesheet"
+    />
+    <script
+      src="https://kit.fontawesome.com/08bb587d23.js"
+      crossorigin="anonymous"
+    ></script>
+    <style>
+      .navbar {
+        width: 18%;
+        float: left;
+        border-right: 1px rgb(189, 188, 188) solid;
+        border-height: 100%;
+        margin-top: -5px;
+        padding-top: 2%;
+        position: fixed;
+        padding-left: 15px;
+      }
+      .other-posts {
+        margin-left: 20%;
+        padding: 25px 50px;
+        overflow: hidden;
+        width: 72%;
+      }
+      .title {
+        font-family: "Instagram Sans Script", sans-serif;
+        font-weight: 300;
+        font-size: 25px;
+      }
+      .options {
+        margin-top: 20px;
+        margin-left: -10px;
+      }
+      .optionLists {
+        font-size: 20px;
+        font-weight: lighter;
+        margin: 13px 0px;
+        padding: 10px;
+        cursor: pointer;
+        margin-right: 10px;
+        border-radius: 10px;
+      }
+      .optionLists i {
+        font-size: 25px;
+      }
+      .optionLists:hover {
+        background-color: #ededed;
+      }
+      .optionTitle {
+        margin-left: 15px;
+      }
+      .more_button {
+        z-index: 10;
+        margin-top: -60%;
+        background-color: white;
+        display: none;
+        margin-left: 50%;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2),
+          0 6px 20px 0 rgba(0, 0, 0, 0.19);
+        border-radius: 10px;
+        width: 200px;
+        padding: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="navbar">
+      <div class="title">Instagram</div>
+      <div class="options">
+        <div class="optionLists">
+          <i class="fa-solid fa-house"></i><span class="optionTitle">Home</span>
+        </div>
+        <div class="optionLists">
+          <i class="fa-solid fa-magnifying-glass"></i
+          ><span class="optionTitle">Search</span>
+        </div>
+        <div class="optionLists">
+          <i class="fa-regular fa-compass"></i
+          ><span class="optionTitle">Explore</span>
+        </div>
+        <div class="optionLists">
+          <i class="fa-solid fa-clapperboard"></i
+          ><span class="optionTitle">Reels</span>
+        </div>
+        <div class="optionLists">
+          <i class="fa-brands fa-facebook-messenger"></i
+          ><span class="optionTitle">Messages</span>
+        </div>
+        <div class="optionLists">
+          <i class="fa-regular fa-heart"></i
+          ><span class="optionTitle">Notifications</span>
+        </div>
+        <div class="optionLists">
+          <i class="fa-regular fa-square-plus"></i
+          ><span class="optionTitle">Create</span>
+        </div>
+        <div class="optionLists">
+          <a href = "{% url "profile" 1 %}" style="text-decoration: none; color: black"><img
+            style="height: 25px; width: 25px; border-radius: 50%; z-index: -1"
+            src="{{ profile.profile_img.url }}"
+          /><span class="optionTitle">Profile</span></a>
+        </div>
+        <div onclick="showMore()" class="optionLists">
+          <i class="fa-solid fa-bars"></i><span class="optionTitle">More</span>
+        </div>
+        <div class="more_button">
+          <div class="optionLists">
+            <span class="optionTitle">Settings</span>
+          </div>
+          <div class="optionLists">
+            <a
+              style="text-decoration: none; color: black"
+              href="{% url 'logout' %}"
+              ><span class="optionTitle">Log out</span></a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="other-posts">{% block content %}{% endblock %}</div>
+    <script>
+      display = false;
+      function showMore() {
+        if (display == false) {
+          display = true;
+          document.querySelector(".more_button").style.display = "block";
+        } else {
+          display = false;
+          document.querySelector(".more_button").style.display = "none";
+        }
+      }
+    </script>
+  </body>
+</html>

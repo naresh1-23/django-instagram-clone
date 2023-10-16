@@ -1,0 +1,61 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Sign up Instagram</title>
+    <link rel="stylesheet" href="{% static  'user/login.css'%}" />
+    <link
+      href="https://fonts.cdnfonts.com/css/instagram-sans-script"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="main">
+      <div class="heading">Instagram</div>
+      <div class="sign-up-form">
+        <form method="POST">
+          {% csrf_token %}
+          <div class="input-data">
+            <input
+              type="email"
+              name="email"
+              placeholder="Email"
+              class="email"
+              onkeyup="checking()"
+            />
+          </div>
+          <div class="input-data">
+            <input
+              class="password"
+              type="password"
+              name="password"
+              placeholder="Password"
+              onkeyup="checking()"
+            />
+          </div>
+          <div class="submit-button">
+            <button type="submit" name="submit" class="button">Log in</button>
+          </div>
+        </form>
+      </div>
+      {% if messages %}
+      {% for message in messages %}
+      <div class='messages'>
+        <div class=  "message">{{message}}</div>
+      </div>
+      {% endfor %}
+      {% endif %}
+      <hr style="color: rgb(189, 188, 188); width: 90%" />
+      <div class="simple-text">
+        <a href = "" style = "text-decoration: none;">Forget password?</a>
+      </div>
+    </div>
+    <div class = "logindiv">
+        Don't have an account? <a href = "{% url 'signup' %}">Sign up</a>
+    </div>
+    <script type = "text/javascript" src = "{% static "user/login.js" %}"></script>
+  </body>
+</html>

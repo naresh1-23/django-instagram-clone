@@ -1,0 +1,168 @@
+{% extends "post/layout.html" %} {% block content %}
+<style>
+  .post {
+    width: 100%;
+    border: 1px solid rgb(189, 188, 188);
+    height: 450px;
+  }
+  .post_image {
+    float: left;
+    width: 65%;
+  }
+  .post_image img {
+    height: 450px;
+    width: 100%;
+  }
+  .name {
+    display: grid;
+    grid-template-columns: 90% 10%;
+    padding: 20px 10px;
+    border-bottom: 1px solid rgb(189, 188, 188);
+  }
+  .username {
+    margin-left: 10px;
+    font-weight: bold;
+  }
+  .comments {
+    height: 250px;
+    width: 100%;
+    border-bottom: 1px solid rgb(189, 188, 188);
+  }
+  .like_icon {
+    font-size: 22px;
+  }
+  .likes_no {
+    display: flex;
+  }
+  .likes_no img {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+  }
+  .post_time {
+    color: rgb(112, 112, 112);
+    font-size: 15px;
+  }
+  .post_comment {
+    display: flex;
+    margin-top: 10px;
+  }
+  .post_comment img {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+  }
+  .post_comment input {
+    padding: 5px;
+    font-size: 15px;
+    margin-left: 10px;
+    border: 0;
+  }
+  .post_comment input:focus {
+    outline: none;
+  }
+  .caption {
+    display: flex;
+    padding-top: 10px;
+  }
+  .image_user_profile img {
+    height: 35px;
+    width: 35px;
+    border-radius: 50%;
+  }
+  .text_comment {
+    width: fit-content;
+    margin-left: 10px;
+  }
+</style>
+<div class="post">
+  <div class="post_image"><img src="/media/posts/example.jpeg" /></div>
+  <div class="post_detail">
+    <div class="name">
+      <div class="username">{{ user.username }}</div>
+      <div class="more_option"><i class="fa-solid fa-ellipsis"></i></div>
+    </div>
+    <div class="comments">
+      <div style="overflow-y: scroll; height: 250px" class="comment_section">
+        <div class="caption">
+          <div class="image_user_profile">
+            <img src="{{ profile.profile_img.url }}" />
+          </div>
+          <div class="text_comment">
+            <b>{{ user.username }}</b><br />
+            करिब १ लाख जनाले काटे बसको टिकट: Around 1 lakh people have booked
+            advance tickets within 5 days to go home from Kathmandu for Dashain
+            festival. 😲
+          </div>
+        </div>
+        {% for i in range %}
+        <div style="margin: 10px 0px" class="caption">
+          <div class="image_user_profile">
+            <img src="{{ profile.profile_img.url }}" />
+          </div>
+          <div class="text_comment">
+            <b>{{ user.username }}</b><br />
+            All good.
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="more_post_detail">
+      <div style="display: flex; padding: 10px 0" class="likes_icon">
+        <div class="like_icon"><i class="fa-regular fa-heart"></i></div>
+        <div class="like_icon" style="margin-left: 20px">
+          <i class="fa-regular fa-comment"></i>
+        </div>
+      </div>
+      <div class="likes_no">
+        <div
+          style="margin-left: 5px; font-weight: bold; margin-top: 5px"
+          class="like_count"
+        >
+          1000 likes
+        </div>
+      </div>
+      <div class="post_time">56 minutes ago</div>
+      <div class="post_comment">
+        <div class="comment_post_image">
+          <img src="{{profile.profile_img.url}}" />
+        </div>
+        <div class="input_comment">
+          <input
+            onkeyup="showPost()"
+            class="text_input_comment"
+            name="comment"
+            type="text"
+            placeholder="Add comment"
+          />
+          <a
+            class="post_link"
+            href=""
+            style="
+              color: blue;
+              text-decoration: none;
+              font-size: 15px;
+              display: none;
+            "
+          >
+            Post
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  function showPost() {
+    post = document.querySelector(".post_link");
+    data = document.querySelector(".text_input_comment").value;
+    console.log(data);
+    if (data.length > 0) {
+      post.style.display = "inline";
+    } else {
+      post.style.display = "none";
+    }
+  }
+</script>
+{% endblock %}

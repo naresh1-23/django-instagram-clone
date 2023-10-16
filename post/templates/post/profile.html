@@ -1,0 +1,113 @@
+{% extends 'post/layout.html' %} {% block content%}
+<style>
+  .intro {
+    display: flex;
+    margin-left: 50px;
+    margin-bottom: 50px;
+  }
+  .profile_img {
+    height: 150px;
+    width: 150px;
+  }
+  .info,
+  .activityDetail,
+  .fullname {
+    margin: 15px 0px 0px 100px;
+    display: flex;
+  }
+  .fullname {
+    font-weight: bold;
+  }
+  .activityDetail {
+    font-size: 18px;
+  }
+  .postsNo {
+    margin-right: 20px;
+  }
+  .username {
+    margin-right: 20px;
+    font-size: 25px;
+  }
+  .postsAndOthers {
+    border-top: 1px solid rgb(189, 188, 188);
+  }
+  .links {
+    margin-top: 10px;
+    display: flex;
+    font-size: 15px;
+    margin-left: 30%;
+  }
+  .link {
+    margin: 0 40px;
+    cursor: pointer;
+  }
+  .posts {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    margin-top: 10px;
+  }
+  .single_post {
+    margin-top: 5px;
+  }
+  .single_post,
+  .single_post img {
+    height: 300px;
+    width: 305px;
+    cursor: pointer;
+  }
+</style>
+<div class="intro">
+  <div class="profile_img">
+    <img
+      height="150px"
+      width="150px"
+      style="border-radius: 50%"
+      src="{{profile.profile_img.url}}"
+    />
+  </div>
+  <div class="mainInfo">
+    <div class="info">
+      <div class="username">{{request.user.username}}</div>
+      <div class="buttons">
+        <button
+          style="
+            width: 120px;
+            font-weight: bold;
+            padding: 8px;
+            cursor: pointer;
+            border: 0px solid rgb(189, 188, 188);
+            border-radius: 10px;
+            bacground-color: rgb(189, 188, 188);
+            font-size: 15px;
+          "
+        >
+          Edit profile
+        </button>
+      </div>
+    </div>
+    <div class="activityDetail">
+      <div class="postsNo"><b>0</b> posts</div>
+      <div class="postsNo"><b>361</b> followers</div>
+      <div class="postsNo"><b>283</b> following</div>
+    </div>
+    <div class="fullname">{{profile.user.fullname}}</div>
+  </div>
+</div>
+<div class="postsAndOthers">
+  <div class="links">
+    <div class="link"><i class="fa-solid fa-table-cells"></i> POSTS</div>
+    <div class="link"><i class="fa-solid fa-user-tag"></i> TAGGED</div>
+  </div>
+  <div class="posts">
+    {% for i in range %}
+    <div class="single_post">
+      <a href="{% url 'single-post' 1 %}"
+        ><div class="post_image">
+          <img src="/media/posts/example.jpeg" /></div
+      ></a>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+{%endblock%}

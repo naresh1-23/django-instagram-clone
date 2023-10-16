@@ -1,0 +1,60 @@
+.main,
+.logindiv {
+  text-align: center;
+  border: 1px solid rgb(189, 188, 188);
+  width: 280px;
+  margin-left: 35%;
+  padding: 30px;
+  margin-top: 20px;
+}
+.logindiv {
+  padding: 20px;
+  width: 300px;
+}
+.logindiv a {
+  text-decoration: none;
+  color: rgb(0, 162, 255);
+}
+.messages {
+  color: red;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.title {
+  font-size: 17px;
+  font-weight: bolder;
+}
+.heading {
+  font-family: "Instagram Sans Script", sans-serif;
+  font-weight: 600;
+  font-size: 40px;
+  transform: scale(0.9, 1);
+  margin-bottom: 10px;
+}
+
+.sign-up-form {
+  margin-top: 20px;
+  padding: 10px;
+}
+.input-data {
+  margin-top: 10px;
+}
+.input-data input {
+  width: 90%;
+  background-color: rgb(248, 248, 248);
+  border: 1px solid rgb(189, 188, 188);
+  padding: 10px;
+  border-radius: 3px;
+}
+.submit-button button {
+  border: 0px solid rgb(83, 192, 255);
+  margin-top: 20px;
+  font-size: 17px;
+  color: white;
+  font-weight: bold;
+  padding: 7px;
+  border-radius: 10px;
+  width: 100%;
+  background-color: rgb(83, 192, 255);
+}
+/* rgb(0, 162, 255) */
