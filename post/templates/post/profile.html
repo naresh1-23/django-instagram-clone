@@ -35,10 +35,9 @@
     margin-top: 10px;
     display: flex;
     font-size: 15px;
-    margin-left: 30%;
+    margin-left: 45%;
   }
   .link {
-    margin: 0 40px;
     cursor: pointer;
   }
   .posts {
@@ -62,13 +61,14 @@
       height="150px"
       width="150px"
       style="border-radius: 50%"
-      src="{{profile.profile_img.url}}"
+      src="{{profile_data.profile_img.url}}"
     />
   </div>
   <div class="mainInfo">
     <div class="info">
-      <div class="username">{{request.user.username}}</div>
+      <div class="username">{{user_data.username}}</div>
       <div class="buttons">
+        {% if user == user_data %}
         <button
           style="
             width: 120px;
@@ -83,27 +83,60 @@
         >
           Edit profile
         </button>
+        {% else %} {% if follow is none %}<a
+          style="text-deacoration: none; color: black"
+          href="{% url 'follow' user_data.id %}"
+          ><button
+            style="
+              width: 120px;
+              font-weight: bold;
+              padding: 8px;
+              cursor: pointer;
+              border: 0px solid rgb(189, 188, 188);
+              border-radius: 10px;
+              bacground-color: rgb(189, 188, 188);
+              font-size: 15px;
+            "
+          >
+            Follow
+          </button></a
+        >
+        {% else %}
+        <button
+          style="
+            width: 120px;
+            font-weight: bold;
+            padding: 8px;
+            cursor: pointer;
+            border: 0px solid rgb(189, 188, 188);
+            border-radius: 10px;
+            bacground-color: rgb(189, 188, 188);
+            font-size: 15px;
+          "
+        >
+          Message
+        </button>
+        {% endif %} {% endif %}
       </div>
     </div>
     <div class="activityDetail">
-      <div class="postsNo"><b>0</b> posts</div>
-      <div class="postsNo"><b>361</b> followers</div>
-      <div class="postsNo"><b>283</b> following</div>
+      <div class="postsNo"><b>{{ post_number }}</b> posts</div>
+      <div class="postsNo"><b>{{ follower }}</b> followers</div>
+      <div class="postsNo"><b>{{ following }}</b> following</div>
     </div>
-    <div class="fullname">{{profile.user.fullname}}</div>
+    <div class="fullname">{{profile_data.user.fullname}}</div>
   </div>
 </div>
 <div class="postsAndOthers">
   <div class="links">
     <div class="link"><i class="fa-solid fa-table-cells"></i> POSTS</div>
-    <div class="link"><i class="fa-solid fa-user-tag"></i> TAGGED</div>
   </div>
   <div class="posts">
-    {% for i in range %}
+    {% for post in posts %}
     <div class="single_post">
-      <a href="{% url 'single-post' 1 %}"
+      <a href="{% url 'single-post' post.id %}"
         ><div class="post_image">
-          <img src="/media/posts/example.jpeg" /></div
+          <img src="{{ post.post_image.url }}" /></div
       ></a>
     </div>
     {% endfor %}

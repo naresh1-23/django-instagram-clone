@@ -1,0 +1,148 @@
+{% extends "post/layout.html" %}{% block content %}
+<style>
+  .main_content {
+    margin-left: 10%;
+  }
+  .posted_user_name {
+    display: flex;
+  }
+  .posted_time {
+    margin-left: 20px;
+    margin-top: 5px;
+    color: rgb(189, 188, 188);
+  }
+  .posted_image img {
+    height: 500px;
+    width: 500px;
+    margin-top: 10px;
+  }
+  .posted_post {
+    width: 500px;
+    border-bottom: 1px solid black;
+    margin-bottom: 40px;
+  }
+  .posted_user_image img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+  }
+  .posted_username {
+    margin-top: 5px;
+    margin-left: 20px;
+    color: black;
+    font-weight: bold;
+  }
+  .post_comment {
+    display: flex;
+    margin-top: 10px;
+    margin-bottom: 40px;
+  }
+  .post_comment img {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+  }
+  .post_comment input {
+    padding: 5px;
+    font-size: 15px;
+    margin-left: 10px;
+    border: 0;
+    width: 400px;
+  }
+  .post_comment input:focus {
+    outline: none;
+  }
+  .caption {
+    display: flex;
+    padding-top: 10px;
+  }
+  .text_comment {
+    width: fit-content;
+  }
+</style>
+<div class="main_content">
+  {% for post in posts %}
+  <div class="posted_post">
+    <div class="posted_user_name">
+      <a href="{% url 'profile' post.user.id %}"
+        ><div style="cursor: pointer" class="posted_user_image">
+          <img src="{{ post.profile.profile_img.url }}" /></div
+      ></a>
+      <a
+        style="text-decoration: none; color: black"
+        href="{% url 'profile' post.user.id %}"
+        ><div class="posted_username">{{ post.user.username }}</div></a
+      >
+      <div class="posted_time">{{ post.posted_date }}</div>
+    </div>
+    <div class="posted_image">
+      <a href="{% url 'single-post' post.id %}"
+        ><img src="{{ post.post_image }}"
+      /></a>
+    </div>
+    <div
+      style="display: flex; padding: 10px 0; font-size: 25px"
+      class="likes_icon"
+    >
+      <div class="like_icon"><i class="fa-regular fa-heart"></i></div>
+      <div class="like_icon" style="margin-left: 20px">
+        <a
+          style="text-decoration: none; color: black"
+          href="{% url 'single-post' post.id %}"
+          ><i class="fa-regular fa-comment"></i
+        ></a>
+      </div>
+    </div>
+    <div class="likes_no">
+      <div style="font-weight: bold; margin-top: 5px" class="like_count">
+        1000 likes
+      </div>
+    </div>
+    <div class="caption">
+      <div class="text_comment">
+        <b>{{ post.user.username }}</b>
+        {{post.caption}}
+      </div>
+    </div>
+    <div class="post_comment">
+      <div class="comment_post_image">
+        <img src="{{profile.profile_img.url}}" />
+      </div>
+      <div class="input_comment">
+        <input
+          onkeyup="showPost()"
+          class="text_input_comment"
+          name="comment"
+          type="text"
+          placeholder="Add comment"
+        />
+        <a
+          class="post_link"
+          href=""
+          style="
+            color: blue;
+            text-decoration: none;
+            font-size: 20px;
+            display: none;
+          "
+        >
+          Post
+        </a>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+<script>
+  function showPost() {
+    post = document.querySelector(".post_link");
+    data = document.querySelector(".text_input_comment").value;
+    console.log(data);
+    if (data.length > 0) {
+      post.style.display = "inline";
+    } else {
+      post.style.display = "none";
+    }
+  }
+</script>
+{% endblock %}

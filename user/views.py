@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.hashers import make_password, check_password
 from django.contrib import messages
-from .models import User, Profile, ConfirmationCode
+from .models import User, Profile, ConfirmationCode, Follow
 from django.contrib.auth import login as auth_login, authenticate, logout
 from django.core.mail import send_mail
 from django.conf import settings
@@ -46,7 +46,7 @@ def signup(request):
 
 def login(request):
     if request.user.is_authenticated:
-        return redirect("profile", pk = 1)
+        return redirect("profile", pk = request.user.id)
     if request.method == "POST":
         email = request.POST['email']
         password = request.POST['password']
@@ -57,7 +57,7 @@ def login(request):
             if authenticate(request, username = user.username, password = password):   
                 auth_login(request, user)
                 messages.success(request, "logged in successfully")
-                return redirect("profile", pk = 1)
+                return redirect("profile", pk = user.id)
             messages.warning(request, "User doesn't exist")
             return redirect('login')
         else:
@@ -90,3 +90,15 @@ def logout_user(request):
     logout(request)
     messages.success(request, "Logged out successfully")
     return redirect("login")
+
+
+def follow(request, pk):
+    user_follow = User.objects.filter(id = pk).first()
+    follow = Follow.objects.filter(followed_to=user_follow, followed_by=request.user).first()
+    if follow:
+        messages.warning(request, f"already followed")
+    else:
+        follow_model = Follow.objects.create(followed_to= user_follow, followed_by=request.user)
+        follow_model.save()
+        return redirect("profile", pk = pk)
+    

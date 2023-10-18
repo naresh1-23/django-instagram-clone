@@ -76,10 +76,10 @@
   }
 </style>
 <div class="post">
-  <div class="post_image"><img src="/media/posts/example.jpeg" /></div>
+  <div class="post_image"><img src="{{post.post_image.url}}" /></div>
   <div class="post_detail">
     <div class="name">
-      <div class="username">{{ user.username }}</div>
+      <div class="username">{{ post.user.username }}</div>
       <div class="more_option"><i class="fa-solid fa-ellipsis"></i></div>
     </div>
     <div class="comments">
@@ -89,10 +89,8 @@
             <img src="{{ profile.profile_img.url }}" />
           </div>
           <div class="text_comment">
-            <b>{{ user.username }}</b><br />
-            करिब १ लाख जनाले काटे बसको टिकट: Around 1 lakh people have booked
-            advance tickets within 5 days to go home from Kathmandu for Dashain
-            festival. 😲
+            <b>{{ post.user.username }}</b><br />
+            {{post.caption}}
           </div>
         </div>
         {% for i in range %}
@@ -123,10 +121,10 @@
           1000 likes
         </div>
       </div>
-      <div class="post_time">56 minutes ago</div>
+      <div class="post_time">{{ post.posted_date }}</div>
       <div class="post_comment">
         <div class="comment_post_image">
-          <img src="{{profile.profile_img.url}}" />
+          <img src="{{logged_profile.profile_img.url}}" />
         </div>
         <div class="input_comment">
           <input

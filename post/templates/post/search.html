@@ -1,0 +1,84 @@
+{% extends "post/layout.html" %}{% block content %}
+<style>
+  .search_input {
+    width: 400px;
+    padding: 8px 8px 8px 15px;
+    height: 20px;
+    font-size: 18px;
+    background-color: rgb(240, 240, 240);
+    border: none;
+    border-radius: 10px;
+  }
+  .search_input:focus {
+    outline: none;
+  }
+  .user_lists {
+    display: flex;
+    cursor: pointer;
+    margin-bottom: 10px;
+  }
+  .user_search_image img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+  }
+  .user_username_full {
+    margin-left: 10px;
+    margin-top: 5px;
+  }
+  .username {
+    font-weight: bold;
+  }
+  .fullname {
+    color: rgb(149, 150, 150);
+  }
+</style>
+<div class="search_main">
+  <div class="search_title"><h2>Search</h2></div>
+  <div class="search_input_div">
+    <input
+      type="text"
+      placeholder="Search"
+      onkeyup="get_data_using_ajax()"
+      class="search_input"
+    />
+  </div>
+  <br />
+  <hr />
+  <br />
+  <div class="result"></div>
+</div>
+<script>
+  function get_data_using_ajax() {
+    var q = document.querySelector(".search_input").value;
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function () {
+      if (this.readyState == 4 && this.status == 200) {
+        data = JSON.parse(this.responseText);
+        data_length = data.length;
+        document.querySelector(".result").innerHTML = "";
+        for (let i = 0; i < data_length; i++) {
+          tag =
+            "<a style = 'text-decoration: none; color: black' href = {% url 'profile' 0 %}>".replace(
+              "0",
+              data[i].id
+            );
+          document.querySelector(
+            ".result"
+          ).innerHTML += `${tag}<div class="user_lists">
+            <div class="user_search_image">
+              <img src="${data[i].profile_img}" />
+            </div>
+            <div class="user_username_full">
+              <div class="username">${data[i].username}</div>
+              <div class="fullname">${data[i].fullname}</div>
+            </div>
+          </div></a>`;
+        }
+      }
+    };
+    xmlhttp.open("GET", "http://127.0.0.1:8000/home/search/" + q, true);
+    xmlhttp.send();
+  }
+</script>
+{% endblock %}

@@ -25,4 +25,12 @@ class ConfirmationCode(models.Model):
     def __str__(self):
         return self.user.username
 
+class Follow(models.Model):
+    followed_to = models.ForeignKey(User, on_delete=models.CASCADE, related_name="followed_user")
+    followed_by = models.ForeignKey(User, on_delete=models.CASCADE, related_name="following")
+    
+    def __str__(self):
+        return f"{self.followed_by.username} followed {self.followed_to.username}"
+    
+
 # Create your models here.

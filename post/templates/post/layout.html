@@ -73,11 +73,11 @@
       <div class="title">Instagram</div>
       <div class="options">
         <div class="optionLists">
-          <i class="fa-solid fa-house"></i><span class="optionTitle">Home</span>
+          <a href = "{% url 'home' %}" style = "text-decoration: none; color: black"><i class="fa-solid fa-house"></i><span class="optionTitle">Home</span></a>
         </div>
         <div class="optionLists">
-          <i class="fa-solid fa-magnifying-glass"></i
-          ><span class="optionTitle">Search</span>
+          <a href = "{% url "search" %}" style="text-decoration: none; color: black"><i class="fa-solid fa-magnifying-glass"></i
+          ><span class="optionTitle">Search</span></a>
         </div>
         <div class="optionLists">
           <i class="fa-regular fa-compass"></i
@@ -96,11 +96,11 @@
           ><span class="optionTitle">Notifications</span>
         </div>
         <div class="optionLists">
-          <i class="fa-regular fa-square-plus"></i
-          ><span class="optionTitle">Create</span>
+          <a href = "{% url "add-post" %}" style="text-decoration: none; color: black"><i class="fa-regular fa-square-plus"></i
+          ><span class="optionTitle">Create</span></a>
         </div>
         <div class="optionLists">
-          <a href = "{% url "profile" 1 %}" style="text-decoration: none; color: black"><img
+          <a href = "{% url "profile" request.user.id %}" style="text-decoration: none; color: black"><img
             style="height: 25px; width: 25px; border-radius: 50%; z-index: -1"
             src="{{ profile.profile_img.url }}"
           /><span class="optionTitle">Profile</span></a>
