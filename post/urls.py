@@ -9,5 +9,6 @@ urlpatterns = [
     path("post/add/", views.add_post, name ='add-post'),
     path("", views.home, name = "home"),
     path("search/", views.search, name = 'search'), 
-    path("search/<str:data>/", views.search_data, name = 'saerch-data')
+    path("search/<str:data>/", views.search_data, name = 'saerch-data'), 
+    path("like/<int:pk>/", views.like_function, name = "like")
 ]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

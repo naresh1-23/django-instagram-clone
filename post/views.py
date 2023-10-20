@@ -3,10 +3,12 @@ from django.http import HttpResponse
 from user.models import User, Profile, Follow
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .models import Post
+from .models import Post, Like
 import random
 from django.core import serializers
 import json
+from django.db.models import Q
+
 
 
 def profile(request, pk):
@@ -30,8 +32,14 @@ def single_post(request, pk):
         logged_profile = Profile.objects.filter(user = user).first()
         post = Post.objects.filter(id = pk).first()
         profile = Profile.objects.filter(user = post.user).first()
+        like = Like.objects.filter(post = post, user = user).first()
+        count = Like.objects.filter(post = post).count()
+        if like:
+            liked = True
+        else:
+            liked = False
         range = [1,2,3,4,5,6,7,8,9]
-        return render(request, "post/singlepost.html", {"user": user, "profile": profile, "post": post, "range": range, "logged_profile": logged_profile})
+        return render(request, "post/singlepost.html", {"user": user, "profile": profile, "post": post, "range": range, "logged_profile": logged_profile, "liked": liked, "count": count})
     messages.warning(request, "Please login")
     return redirect('login')
 
@@ -57,10 +65,18 @@ def home(request):
     followed = Follow.objects.filter(followed_by=user)
     posts = []
     for follow in followed:
-        posted = Post.objects.filter(user = follow.followed_to)
+        posted = Post.objects.filter(Q(user = follow.followed_to) | Q(user = user))
         for poster in posted:
+            like = Like.objects.filter(post = poster).count()
+            liked_check = Like.objects.filter(post = poster, user = user).first()
             new = {}
+            if liked_check:
+                liked = True
+            else:
+                liked = False
+            new["liked"] = liked
             new["id"] = poster.id
+            new["like_count"] = like
             new["caption"] = poster.caption
             new["post_image"] = poster.post_image.url
             new["user"] = poster.user
@@ -88,3 +104,25 @@ def search_data(request, data):
         profile.append(new)
     res_data = json.dumps(profile)
     return HttpResponse(res_data,content_type="application/json")
+
+def like_function(request, pk):
+    post = Post.objects.filter(id = pk).first()
+    user = request.user
+    like_check = Like.objects.filter(post = post, user = user).first()
+    data = []
+    post_count = {}
+    if like_check:
+        like_check.delete()
+        liked = False
+    else:
+        like_obj = Like.objects.create(post = post, user = user)
+        like_obj.save()
+        liked = True
+    
+    like_count = Like.objects.filter(post = post).count()
+    post_count["liked"] = liked
+    post_count["count"] = like_count
+    data.append(post_count)
+    res_data = json.dumps(data)
+    return HttpResponse(res_data, content_type = "application/json")
+        

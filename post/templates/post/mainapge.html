@@ -84,7 +84,19 @@
       style="display: flex; padding: 10px 0; font-size: 25px"
       class="likes_icon"
     >
-      <div class="like_icon"><i class="fa-regular fa-heart"></i></div>
+      <div class="like_icon" id="liked{{post.id}}">
+        {% if post.liked %}<i
+          onclick="like_check_using_ajax({{post.id}})"
+          class="fa-solid fa-heart"
+          style="color: #ff0000; cursor: pointer"
+        ></i
+        >{% else %}<i
+          onclick="like_check_using_ajax({{post.id}})"
+          class="fa-regular fa-heart"
+          style="cursor: pointer"
+        ></i
+        >{% endif %}
+      </div>
       <div class="like_icon" style="margin-left: 20px">
         <a
           style="text-decoration: none; color: black"
@@ -94,8 +106,12 @@
       </div>
     </div>
     <div class="likes_no">
-      <div style="font-weight: bold; margin-top: 5px" class="like_count">
-        1000 likes
+      <div
+        style="font-weight: bold; margin-top: 5px"
+        class="like_count"
+        id="like{{post.id}}"
+      >
+        {{post.like_count}} likes
       </div>
     </div>
     <div class="caption">
@@ -143,6 +159,38 @@
     } else {
       post.style.display = "none";
     }
+  }
+  function like_check_using_ajax(pk) {
+    var q = document.querySelector(`#liked${pk}`);
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function () {
+      if (this.readyState == 4 && this.status == 200) {
+        data = JSON.parse(this.responseText);
+        q.innerHTML = "";
+
+        if (data[0].liked) {
+          tag = `<i
+          onclick="like_check_using_ajax(${pk})"
+          class="fa-solid fa-heart"
+          style="color: #ff0000; cursor: pointer"
+        ></i
+        >`;
+        } else {
+          tag = `<i
+          onclick="like_check_using_ajax(${pk})"
+          class="fa-regular fa-heart" style = "cursor: pointer"
+        ></i
+        >`;
+        }
+        q.innerHTML = tag;
+        document.querySelector(`#like${pk}`).innerHTML = "";
+        document.querySelector(
+          `#like${pk}`
+        ).innerHTML = `${data[0].count} likes`;
+      }
+    };
+    xmlhttp.open("GET", "http://127.0.0.1:8000/home/like/" + pk, true);
+    xmlhttp.send();
   }
 </script>
 {% endblock %}
