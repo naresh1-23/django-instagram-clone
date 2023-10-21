@@ -83,24 +83,28 @@
       <div class="more_option"><i class="fa-solid fa-ellipsis"></i></div>
     </div>
     <div class="comments">
-      <div style="overflow-y: scroll; height: 250px" class="comment_section">
+      <div
+        style="overflow-y: auto; height: 250px"
+        class="comment_section"
+        id="comment_data_post"
+      >
         <div class="caption">
           <div class="image_user_profile">
-            <img src="{{ profile.profile_img.url }}" />
+            <img src="{{ profile_post.profile_img.url }}" />
           </div>
           <div class="text_comment">
             <b>{{ post.user.username }}</b><br />
             {{post.caption}}
           </div>
         </div>
-        {% for i in range %}
+        {% for comment in comments %}
         <div style="margin: 10px 0px" class="caption">
           <div class="image_user_profile">
-            <img src="{{ profile.profile_img.url }}" />
+            <img src="{{ comment.profile.profile_img.url }}" />
           </div>
           <div class="text_comment">
-            <b>{{ user.username }}</b><br />
-            All good.
+            <b>{{ comment.user.username }}</b><br />
+            {{ comment.comment }}
           </div>
         </div>
         {% endfor %}
@@ -147,18 +151,19 @@
             type="text"
             placeholder="Add comment"
           />
-          <a
+          <button
             class="post_link"
-            href=""
             style="
               color: blue;
               text-decoration: none;
               font-size: 15px;
               display: none;
+              border: none;
+              background: white;
             "
           >
             Post
-          </a>
+          </button>
         </div>
       </div>
     </div>
@@ -168,7 +173,6 @@
   function showPost() {
     post = document.querySelector(".post_link");
     data = document.querySelector(".text_input_comment").value;
-    console.log(data);
     if (data.length > 0) {
       post.style.display = "inline";
     } else {
@@ -207,5 +211,47 @@
     xmlhttp.open("GET", "http://127.0.0.1:8000/home/like/" + pk, true);
     xmlhttp.send();
   }
+
+  //Its real time comment
+  const postId = "{{post.id}}";
+  console.log(postId);
+
+  const commentSocket = new WebSocket(
+    "ws://" + window.location.host + "/ws/comment/" + postId + "/"
+  );
+
+  commentSocket.onmessage = function (e) {
+    const data = JSON.parse(e.data);
+    maindiv = document.querySelector("#comment_data_post");
+    maindiv.innerHTML =
+      maindiv.innerHTML +
+      `<div style="margin: 10px 0px" class="caption">
+      <div class="image_user_profile">
+        <img src="${data.profile}" />
+      </div>
+      <div class="text_comment">
+        <b>${data.user}</b><br />
+        ${data.comment}
+      </div>
+    </div>`;
+  };
+
+  commentSocket.onclose = function (e) {
+    console.error("Chat socket closed unexpectedly");
+  };
+
+  document.querySelector(".text_input_comment").focus();
+
+  document.querySelector(".post_link").onclick = function (e) {
+    const messageInputDom = document.querySelector(".text_input_comment");
+    const comment = messageInputDom.value;
+    commentSocket.send(
+      JSON.stringify({
+        comment: comment,
+        user: "{{user.id}}",
+      })
+    );
+    messageInputDom.value = "";
+  };
 </script>
 {% endblock %}

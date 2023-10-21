@@ -3,7 +3,7 @@ from django.http import HttpResponse
 from user.models import User, Profile, Follow
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from .models import Post, Like
+from .models import Post, Like, Comment
 import random
 from django.core import serializers
 import json
@@ -31,15 +31,26 @@ def single_post(request, pk):
         user = request.user
         logged_profile = Profile.objects.filter(user = user).first()
         post = Post.objects.filter(id = pk).first()
-        profile = Profile.objects.filter(user = post.user).first()
+        profile = Profile.objects.filter(user = user).first()
+        profile_post = Profile.objects.filter(user = post.user).first()
         like = Like.objects.filter(post = post, user = user).first()
         count = Like.objects.filter(post = post).count()
         if like:
             liked = True
         else:
             liked = False
-        range = [1,2,3,4,5,6,7,8,9]
-        return render(request, "post/singlepost.html", {"user": user, "profile": profile, "post": post, "range": range, "logged_profile": logged_profile, "liked": liked, "count": count})
+        comments_datas = Comment.objects.filter(post = post)
+        comments = [] 
+        for comment_data in comments_datas:
+            profile_comment = Profile.objects.filter(user = comment_data.user).first()
+            new = {}
+            new["comment_id"] = comment_data.id
+            new["comment"] = comment_data.comment
+            new["post"]  = comment_data.post
+            new["user"] = comment_data.user
+            new["profile"] = profile_comment
+            comments.append(new)
+        return render(request, "post/singlepost.html", {"user": user, "profile": profile, "post": post, "range": range, "logged_profile": logged_profile, "liked": liked, "count": count, "comments": comments, "profile_post": profile_post})
     messages.warning(request, "Please login")
     return redirect('login')
 
