@@ -102,20 +102,24 @@
           </button></a
         >
         {% else %}
-        <button
-          style="
-            width: 120px;
-            font-weight: bold;
-            padding: 8px;
-            cursor: pointer;
-            border: 0px solid rgb(189, 188, 188);
-            border-radius: 10px;
-            bacground-color: rgb(189, 188, 188);
-            font-size: 15px;
-          "
+        <a
+          style="text-deacoration: none; color: black"
+          href="{% url 'check-room' user_data.id %}"
+          ><button
+            style="
+              width: 120px;
+              font-weight: bold;
+              padding: 8px;
+              cursor: pointer;
+              border: 0px solid rgb(189, 188, 188);
+              border-radius: 10px;
+              bacground-color: rgb(189, 188, 188);
+              font-size: 15px;
+            "
+          >
+            Message
+          </button></a
         >
-          Message
-        </button>
         {% endif %} {% endif %}
       </div>
     </div>
@@ -131,6 +135,7 @@
   <div class="links">
     <div class="link"><i class="fa-solid fa-table-cells"></i> POSTS</div>
   </div>
+  {% if user_data == request.user or follow is not none %}
   <div class="posts">
     {% for post in posts %}
     <div class="single_post">
@@ -141,6 +146,11 @@
     </div>
     {% endfor %}
   </div>
+  {% else %}
+  <div style="text-align: center; margin-top: 50px">
+    <h2>Please follow to see the post</h2>
+  </div>
+  {% endif %}
 </div>
 
 {%endblock%}

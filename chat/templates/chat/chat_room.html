@@ -1,0 +1,217 @@
+{% extends "chat/chat_layout.html" %}{% block content %}
+<style>
+  .chat_main {
+    display: flex;
+    width: 100%;
+  }
+  .chat_user_list {
+    width: 30%;
+    border-right: 1px solid rgb(189, 188, 188);
+    margin-top: -10px;
+    height: 560px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+  }
+  .chat_list {
+    width: 70%;
+    text-align: center;
+  }
+
+  .chatted_user_profile img {
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+  }
+  .message_title {
+    display: flex;
+    cursor: pointer;
+  }
+  .chatted_user_username {
+    color: black;
+    margin-top: -20px;
+    margin-left: 10px;
+  }
+  .heading_message {
+    display: flex;
+    width: 1000px;
+    border-bottom: 1px solid black;
+  }
+  .heading_message_photo img {
+    margin-left: 20px;
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+  }
+  .heading_message_username {
+    font-size: 30px;
+    font-weight: bold;
+    margin-left: 20px;
+    margin-top: 10px;
+  }
+  .friend-message,
+  .own-message {
+    padding: 5px 15px 5px 15px;
+    font-size: 18px;
+    width: fit-content;
+    word-break: break-all;
+    text-align: left;
+    border-radius: 30px;
+    margin-bottom: 15px;
+  }
+  .friend-message {
+    background-color: #e8e8e8;
+    margin-left: 20px;
+  }
+  .own-message {
+    margin-left: auto;
+    background-color: rgb(0, 162, 255);
+    color: white;
+  }
+  /* width */
+  ::-webkit-scrollbar {
+    width: 10px;
+  }
+
+  /* Track */
+  ::-webkit-scrollbar-track {
+    background: #f1f1f1;
+  }
+
+  /* Handle */
+  ::-webkit-scrollbar-thumb {
+    background: #888;
+  }
+  .chat_messages {
+    width: 100%;
+    margin-top: 20px;
+    height: 470px;
+    overflow-y: auto;
+  }
+  /* Handle on hover */
+  ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+  }
+  .message_input_div {
+    display: flex;
+  }
+  .msg_input_div input {
+    padding: 10px;
+    width: 700px;
+    margin-left: 10px;
+    border: rgb(189, 188, 188) 1px solid;
+    padding-left: 20px;
+    font-size: 17px;
+    border-radius: 30px;
+  }
+  .msg_input_div input:focus {
+    outline: 1px solid rgb(189, 188, 188);
+  }
+  .submit_button button {
+    background: white;
+    border: none;
+    font-size: 17px;
+    padding: 10px;
+    color: rgb(0, 162, 255);
+  }
+</style>
+<div class="chat_main">
+  <div class="chat_user_list">
+    <div class="user_username"><h2>{{ user.username }}</h2></div>
+    <div class="title_chat"><h3>Messages</h3></div>
+    {% for rom in rooms_arr %}
+    <a href = "{% url "check-room" rom.id %}" style = "text-decoration: none;"><div class="message_title">
+      <div class="chatted_user_profile">
+        <img src="{{rom.profile_img}}" />
+      </div>
+      <div class="chatted_user_username">
+        <h4>{{ rom.username }}</h4>
+        <h4
+          style="
+            text-weight: light;
+            margin-top: -10px;
+            color: rgb(189, 188, 188);
+          "
+        >
+          {{ rom.last_message }}
+        </h4>
+      </div>
+    </div></a>
+    {% endfor %}
+  </div>
+  <div class="chat_list">
+    <div class="heading_message">
+      <div class="heading_message_photo">
+        <img src="{{another_profile.profile_img.url}}" />
+      </div>
+      <div class="heading_message_username">{{ another_user.username }}</div>
+    </div>
+    <div class="chat_messages">
+      {% for chat in chats %}
+      {% if chat.msg_from != user %}
+      <div class="friend-message">{{ chat.message }}</div>
+      {% else %}
+      <div class="own-message">{{ chat.message }}</div>
+      {% endif %}
+      {% endfor %}
+    </div>
+    <div class="message_input_div">
+      <div class="msg_input_div">
+        <input type="text" placeholder="Message.." id="message" />
+      </div>
+      <div class="submit_button"><button id = "send_data" type="button">Send</button></div>
+    </div>
+  </div>
+</div>
+<script> 
+  function bottom_scroll() {
+    const msgDiv = document.querySelector(".chat_messages");
+    msgDiv.scrollTop = msgDiv.scrollHeight;
+  }
+  bottom_scroll();
+  const room_id = "{{room.id}}";
+  const chatSocket = new WebSocket(
+  "ws://" + window.location.host + "/ws/chat/" + room_id + "/"
+);
+
+chatSocket.onmessage = function (e) {
+  const data = JSON.parse(e.data);
+  maindiv = document.querySelector(".chat_messages");
+  console.log(data.message);
+  if(data.user_from == "{{user.username}}"){
+  maindiv.innerHTML =
+    maindiv.innerHTML +
+    `<div class="own-message">${data.message}</div>`;
+}
+else{
+  maindiv.innerHTML = maindiv.innerHTML+ `<div class="friend-message">${data.message}</div>`;
+}
+bottom_scroll();
+};
+
+chatSocket.onclose = function (e) {
+  console.error("Chat socket closed unexpectedly");
+};
+
+document.querySelector("#message").focus();
+
+document.querySelector("#send_data").onclick = function (e) {
+  const messageInputDom = document.querySelector("#message");
+  const message = messageInputDom.value;
+  if("{{user.username}}" == "{{ room.user1.username }}"){
+    user_from = "{{user.username}}";
+    user_to = "{{room.user2.username}}";
+  }
+  else{
+    user_from = "{{user.username}}";
+    user_to = "{{room.user1.username}}";
+  }
+  chatSocket.send(
+    JSON.stringify({
+      message: message,
+      user_from: user_from,
+      user_to: user_to
+    })
+  );
+  messageInputDom.value = "";
+};</script>
+{% endblock %}

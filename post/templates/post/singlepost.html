@@ -214,7 +214,6 @@
 
   //Its real time comment
   const postId = "{{post.id}}";
-  console.log(postId);
 
   const commentSocket = new WebSocket(
     "ws://" + window.location.host + "/ws/comment/" + postId + "/"

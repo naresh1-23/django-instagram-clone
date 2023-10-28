@@ -12,20 +12,20 @@
     ></script>
     <style>
       .navbar {
-        width: 18%;
+        width: 50px;
         float: left;
         border-right: 1px rgb(189, 188, 188) solid;
         border-height: 100%;
         margin-top: -5px;
-        padding-top: 2%;
+        padding-top: 5%;
         position: fixed;
-        padding-left: 15px;
+        padding-left: 10px;
       }
       .other-posts {
-        margin-left: 20%;
+        margin-left: 50px;
         padding: 25px 50px;
         overflow: hidden;
-        width: 72%;
+        width: 85%;
       }
       .title {
         font-family: "Instagram Sans Script", sans-serif;
@@ -56,10 +56,10 @@
       }
       .more_button {
         z-index: 10;
-        margin-top: -60%;
+        margin-top: -150px;
         background-color: white;
         display: none;
-        margin-left: 50%;
+        margin-left: 60%;
         box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2),
           0 6px 20px 0 rgba(0, 0, 0, 0.19);
         border-radius: 10px;
@@ -70,43 +70,38 @@
   </head>
   <body>
     <div class="navbar">
-      <div class="title">Instagram</div>
       <div class="options">
         <div class="optionLists">
-          <a href = "{% url 'home' %}" style = "text-decoration: none; color: black"><i class="fa-solid fa-house"></i><span class="optionTitle">Home</span></a>
+          <a href = "{% url 'home' %}" style = "text-decoration: none; color: black"><i class="fa-solid fa-house"></i></a>
         </div>
         <div class="optionLists">
-          <a href = "{% url "search" %}" style="text-decoration: none; color: black"><i class="fa-solid fa-magnifying-glass"></i
-          ><span class="optionTitle">Search</span></a>
+          <a href = "{% url "search" %}" style="text-decoration: none; color: black"><i class="fa-solid fa-magnifying-glass"></i>
+        </a>
         </div>
         <div class="optionLists">
-          <i class="fa-regular fa-compass"></i
-          ><span class="optionTitle">Explore</span>
+          <i class="fa-regular fa-compass"></i>
         </div>
         <div class="optionLists">
-          <i class="fa-solid fa-clapperboard"></i
-          ><span class="optionTitle">Reels</span>
+          <i class="fa-solid fa-clapperboard"></i>
         </div>
         <div class="optionLists">
-          <a href = "{% url "chat" %}" style="text-decoration: none; color: black"><i class="fa-brands fa-facebook-messenger"></i
-          ><span class="optionTitle">Messages</span></a>
+          <a href = "{% url "chat" %}" style="text-decoration: none; color: black"><i class="fa-brands fa-facebook-messenger"></i></a>
         </div>
         <div class="optionLists">
-          <i class="fa-regular fa-heart"></i
-          ><span class="optionTitle">Notifications</span>
+          <i class="fa-regular fa-heart"></i>
         </div>
         <div class="optionLists">
           <a href = "{% url "add-post" %}" style="text-decoration: none; color: black"><i class="fa-regular fa-square-plus"></i
-          ><span class="optionTitle">Create</span></a>
+          ></a>
         </div>
         <div class="optionLists">
           <a href = "{% url "profile" request.user.id %}" style="text-decoration: none; color: black"><img
             style="height: 25px; width: 25px; border-radius: 50%; z-index: -1"
             src="{{ profile.profile_img.url }}"
-          /><span class="optionTitle">Profile</span></a>
+          /></a>
         </div>
         <div onclick="showMore()" class="optionLists">
-          <i class="fa-solid fa-bars"></i><span class="optionTitle">More</span>
+          <i class="fa-solid fa-bars"></i>
         </div>
         <div class="more_button">
           <div class="optionLists">

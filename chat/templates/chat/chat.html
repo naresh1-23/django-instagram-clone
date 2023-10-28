@@ -1,0 +1,65 @@
+{% extends "chat/chat_layout.html" %}{% block content %}
+<style>
+  .chat_main {
+    display: flex;
+  }
+  .chat_user_list {
+    width: 30%;
+    border-right: 1px solid rgb(189, 188, 188);
+    margin-top: -10px;
+    height: 560px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+  }
+  .chat_list {
+    width: 70%;
+    text-align: center;
+    margin-top: 100px;
+  }
+
+  .chatted_user_profile img {
+    height: 50px;
+    width: 50px;
+    border-radius: 50%;
+  }
+  .message_title {
+    text-decoration: none;
+    display: flex;
+    cursor: pointer;
+  }
+  .chatted_user_username {
+    color: black;
+    margin-top: -20px;
+    margin-left: 10px;
+  }
+</style>
+<div class="chat_main">
+  <div class="chat_user_list">
+    <div class="user_username"><h2>{{ user.username }}</h2></div>
+    <div class="title_chat"><h3>Messages</h3></div>
+    {% for room in rooms_arr %}
+    <a style = "text-decoration: none"  href = "{% url "check-room" room.id %}"><div class="message_title">
+      <div class="chatted_user_profile">
+        <img src="{{ room.profile_img }}" />
+      </div>
+      <div class="chatted_user_username">
+        <h4>{{ room.username }}</h4>
+        <h4
+          style="
+            text-weight: light;
+            margin-top: -10px;
+            color: rgb(189, 188, 188);
+          "
+        >
+          {{ room.last_message }}
+        </h4>
+      </div>
+    </div></a>
+    {% endfor %}
+  </div>
+  <div class="chat_list">
+    <h2>Your messages</h2>
+    <h3>Send private messages to a friend or group</h3>
+  </div>
+</div>
+{% endblock %}

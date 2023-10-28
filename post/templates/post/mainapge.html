@@ -18,6 +18,7 @@
   }
   .posted_post {
     width: 500px;
+
     border-bottom: 1px solid black;
     margin-bottom: 40px;
   }
@@ -32,32 +33,11 @@
     color: black;
     font-weight: bold;
   }
-  .post_comment {
-    display: flex;
-    margin-top: 10px;
-    margin-bottom: 40px;
-  }
-  .post_comment img {
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
-  }
-  .post_comment input {
-    padding: 5px;
-    font-size: 15px;
-    margin-left: 10px;
-    border: 0;
-    width: 400px;
-  }
-  .post_comment input:focus {
-    outline: none;
-  }
+
   .caption {
     display: flex;
     padding-top: 10px;
-  }
-  .text_comment {
-    width: fit-content;
+    margin-bottom: 20px;
   }
 </style>
 <div class="main_content">
@@ -118,32 +98,6 @@
       <div class="text_comment">
         <b>{{ post.user.username }}</b>
         {{post.caption}}
-      </div>
-    </div>
-    <div class="post_comment">
-      <div class="comment_post_image">
-        <img src="{{profile.profile_img.url}}" />
-      </div>
-      <div class="input_comment">
-        <input
-          onkeyup="showPost()"
-          class="text_input_comment"
-          name="comment"
-          type="text"
-          placeholder="Add comment"
-        />
-        <a
-          class="post_link"
-          href=""
-          style="
-            color: blue;
-            text-decoration: none;
-            font-size: 20px;
-            display: none;
-          "
-        >
-          Post
-        </a>
       </div>
     </div>
   </div>
